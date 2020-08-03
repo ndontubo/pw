@@ -27,9 +27,9 @@ def main():
 	myMsgPrint()
 	print(msg1)
 	myMiniMsgPrint()
-	time.sleep(2)
+	time.sleep(5)
 	os.system('clear')
-	time.sleep(2)
+	time.sleep(3)
 	print('HELLO... I AM LOOKING FOR A PERSON TO SPEND SOME TIME WITH...\n')
 	time.sleep(1)
 	print('WOULD YOU LIKE TO BE THAT PERSON: \n')
@@ -242,8 +242,6 @@ def ropasciStart():
 	time.sleep(2)
 	print(msg5)
 	time.sleep(2)
-	print(msg6)
-	time.sleep(2)
 	print('*' * 30)
 	time.sleep(1)
 	x = input("PRESS 'ENTER' TO CONTINUE")
@@ -354,71 +352,23 @@ def ropasciStart():
 				break
 			res = matchInputs(ui,mi)
 			if res == 4:
-				if ui == 1:
-					time.sleep(1)
-					print('Both the user and the computer have chosen the same hand which is rock\n')
-					time.sleep(1)
-					print('Tie\n')
-				elif ui == 2:
-					time.sleep(1)
-					print('Both the user and the computer have chosen the same hand which is scissors\n')
-					time.sleep(1)
-					print('Tie\n')
-				elif ui == 3:
-					time.sleep(1)
-					print('Both the user and the computer have chosen the same hand which is paper\n')
-					time.sleep(1)
-					print('Tie\n')
+				time.sleep(1)
+				print('Both the user and the computer have chosen the same hand which is {0}\n'.format(ui))
+				time.sleep(1)
+				print('Tie\n')
 			elif res == ui:
-				if ui == 1: 
-					time.sleep(1)
-					print('The user has won this round with the hand, rock\n')
-					time.sleep(1)
-					print("Which beats the computer's hand which is scissors\n")
-					time.sleep(1)
-					print('User is the winner\n')
-					ui_ctr = ui_ctr + 1
-				elif ui == 2:
-					time.sleep(1)
-					print('The user has won this round with the hand, scissors\n')
-					time.sleep(1)
-					print("Which beats the computer's hand which is paper\n")
-					time.sleep(1)
-					print('User is the winner\n')
-					ui_ctr = ui_ctr + 1
-				elif ui == 3:
-					time.sleep(1)
-					print('The user has won this round with the hand, paper\n')
-					time.sleep(1)
-					print("Which beats the computer's hand which is rock\n")
-					time.sleep(1)
-					print('User is the winner\n')
-					ui_ctr = ui_ctr + 1
+				time.sleep(1)
+				print('The user has won this round with the hand, {0}\n'.format(ui))
+				time.sleep(1)
+				print('User is the winner\n')
+				ui_ctr = ui_ctr + 1
 			elif res == mi:
-				if mi == 1:
-					time.sleep(1)
-					print('The computer has won this round with the hand, rock\n')
-					time.sleep(1)
-					print("Which beats the user's hand which is scissors\n")
-					time.sleep(1)
-					print('Computer is the winner\n')
-					mi_ctr = mi_ctr + 1
-				elif mi == 2:
-					time.sleep(1)
-					print('The computer has won this round with the hand, scissors\n')
-					time.sleep(1)
-					print("Which beats the user's hand which is paper\n")
-					time.sleep(1)
-					print('Computer is the winner\n')
-					mi_ctr = mi_ctr + 1
-				elif mi == 3:
-					time.sleep(1)
-					print('The computer has won this round with the hand, paper\n')
-					time.sleep(1)
-					print("Which beats the user's hand which is rock\n")
-					time.sleep(1)
-					print('Computer is the winner\n')
-					mi_ctr = mi_ctr + 1
+				time.sleep(1)
+				print('The computer has won this round with the hand, {0}\n'.format(ui))
+				time.sleep(1)
+				print('Computer is the winner\n')
+				mi_ctr = mi_ctr + 1
+		  	
 def myMsgPrint():
 	print('_' * 5, ' ' * 90, '_' * 5)
 	print('_' * 10, ' ' * 80, '_' * 10)
