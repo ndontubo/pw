@@ -1,0 +1,18 @@
+			global player_list
+			player_list = []
+			global player_dict
+			player_dict = {}
+			global value_dict
+			value_dict = {}
+			global winner
+			winner = zzzz
+
+
+1. method to find winner value_dict  as in put and return should be winner key
+	valeu_dict = {'Lenny':17, 'Navvi':19, 'mi':20}
+        return value should mi here.
+	in the main program, use this return value to annouce the winner for the round
+
+2. update  the player_dict with current credits after winner is announced , before next round
+
+3. check in the initial starting, if the creidts are least 500 - optional
