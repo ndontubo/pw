@@ -16,3 +16,23 @@
 2. update  the player_dict with current credits after winner is announced , before next round
 
 3. check in the initial starting, if the creidts are least 500 - optional
+
+BLACK JACK FINAL
+
+1. Give the dealer the ability to bet
+    - like the bank/house in casinos
+    - infinite credits
+
+2. Individual bets(COMPLETED)
+    - can bet how much as long as they have minimum credits and if they have those credits to bet
+
+3. Give new implementation on how to update credit and score(COMPLETED)
+    - if person wins
+        - if he/she or they win with 21 they each get double and half their bet
+            - if two or more people tie with 21 they each get double their money back
+        - if he/she or they wins regularly they each get double their bet
+    - if person loses
+        - they lose their bet
+
+4. Check every question for valid answers
+
