@@ -10,7 +10,7 @@ import random
 import re
 import sys
 
-global msg1, msg2, msg3, msg4, name, deck, mi_res, myRules, thicc_cards, deal_dict, round_bet, player_order, player_bet, total_pot
+global msg1, msg2, msg3, msg4, name, deck, mi_res, myRules, thicc_cards, player_ber, deal_dict, player_order, total_pot
 
 fd = open('run.log', 'w')
 
@@ -42,16 +42,18 @@ def main():
 			score_dict = {}
 			global final_winner
 			final_winner = ''
+			global player_bet
+			player_bet = {}
 			for cnt in range(player_count):
 				print('ENTER NAME FOR USER {0}'.format(cnt + 1))
 				uname = input('Username: ')
 				player_list.append(uname)
 				credit_dict[uname] = 10000
+			player_list.append('DEALER')
 			for k, v in credit_dict.items():
 				print(k, "Your total credits are ----->", v)
-			player_list.append('COMPUTER')
-			time.sleep(1)
-			credit_dict['COMPUTER'] = 10000
+			print('DEALER will also play with infinite credits')
+			credit_dict['DEALER'] = 100000000000000000000000000000000000000000000000000000000000000000
 			print('SO LETS GET STARTED\n')
 			time.sleep(3)
 			print('CLREAING.........\n')
@@ -142,9 +144,9 @@ BB      BB LL         AA     AA	CC        KK      KK |  J    JJ   AA     AA CC  
 BBBBBBBBB  LLLLLLLLLL AA     AA	 CCCCCCCC KK      KK |  JJJJJJ    AA     AA  CCCCCCCCC KK      KK      ''')
 
 def dealTheCards(players_list):
-	global thicc_cards
 	deal_dict = {}
 	thicc_cards = deck.copy()
+	global thicc_cards
 	# print(len(thicc_cards))
 	for player in players_list:
 		print(players_list, file=fd)
@@ -160,11 +162,13 @@ def dealTheCards(players_list):
 
 
 def blackjack(player_list, credit_dict, score_dict, rounds_count):
-	global player_order, round_bet
+	global player_order
 	global thicc_cards
 	player_order = []
 	new_player_list = []
 	new_player_list2 = []
+	player_bet = {}
+	global player_bet
 	rounds = 0
 	while rounds_count > 0:
 		rounds = rounds + 1
@@ -173,18 +177,34 @@ def blackjack(player_list, credit_dict, score_dict, rounds_count):
 		winner_list = []
 		winner_dict = {}
 		ui_cards = []
-		player_bet = {}
 		total_pot = 0
 		mi_card_total = 0
 		ui_card_total = 0
 		rounds_count = rounds_count - 1
 		turns = 0
-		round_bet = int(input('How much are we agreeing to bet for this round: '))
+		'''changing round_bet to player_bet when needed'''
+
+		new_player_list = player_list.copy()
+		new_player_list2 = new_player_list
+		init_deal_dict = dealTheCards(new_player_list)
+
+		while len(new_player_list) > 0:
+			for pl, scr in credit_dict.items():
+				if scr <= 50:
+					new_player_list.remove(pl)
+					player_list.remove(pl)
+					time.sleep(1)
+					print('Because you cannot bet anymore credits, you are out of the game\n')
 
 		for pl in player_list:
 			time.sleep(1)
-			round_bet = int(input('{0} how much are you betting for this round: '.format(pl)))
-			player_bet[pl] = round_bet
+			bet = int(input('{0} how much are you betting for this round: '.format(pl)))
+			while bet > credit_dict[pl] or bet <= 50 or type(credit_dict[pl] == int):
+				time.sleep(1)
+				print('The credits that you are betting are unavailable, do not meet the minimum bet or are not an integer'.format(pl, credit_dict[pl], bet))
+				bet = int(input('Please choose a different amount: '))
+			player_bet[pl] = bet
+			credit_dict[pl] -= bet
 			print('')
 
 		new_player_list = player_list.copy()
@@ -195,14 +215,6 @@ def blackjack(player_list, credit_dict, score_dict, rounds_count):
 			if re.search('COMPUTER', str(k)):
 				mi_cards_list.append(v)
 				print(mi_cards_list, file=fd)
-
-		while len(new_player_list) > 0:
-			for pl, scr in credit_dict.items():
-				if scr <= 0 or scr < round_bet:
-					new_player_list.remove(pl)
-					player_list.remove(pl)
-					time.sleep(1)
-					print('Because you cannot bet anymore credits, you are out of the game\n')
 
 			print(new_player_list, file=fd)
 			curr_player = random.choice(new_player_list)
@@ -269,7 +281,7 @@ def blackjack(player_list, credit_dict, score_dict, rounds_count):
 						if ui_card_total > 21:
 							print("Your hand's value has gone over 21\n")
 							print("Because you have busted, you have no chance of winning\n")
-							print("So now it is the next player's turn to select his/her hand\n")
+							print("So now your turn is over\n")
 							time.sleep(4)
 							score_dict[curr_player] = ui_card_total
 							break
@@ -351,13 +363,13 @@ def blackjack(player_list, credit_dict, score_dict, rounds_count):
 							continue
 						elif hit_or_stand == 2:
 							print('So you are confident in your hand\n')
-							print("So now it is the next player's turn to select his/her hand\n")
+							print("So now your turn is over\n")
 							time.sleep(4)
 							score_dict[curr_player] = ui_card_total
 							break
 						else:
 							print('Because you are incompetent to select an action you will stand\n')
-							print("So now it is the next player's turn to select his/her hand\n")
+							print("So now your turn is over\n")
 							time.sleep(4)
 							score_dict[curr_player] = ui_card_total
 							break
@@ -365,7 +377,7 @@ def blackjack(player_list, credit_dict, score_dict, rounds_count):
 					os.system('clear')
 					time.sleep(2)
 					continue
-				elif curr_player == 'COMPUTER':
+				elif curr_player == 'DEALER':
 					mi_card_total = 0
 					time.sleep(2)
 					ace_ctr = 1
@@ -447,7 +459,7 @@ def blackjack(player_list, credit_dict, score_dict, rounds_count):
 							time.sleep(2)
 							print("Because you have busted, you have no chance of winning\n")
 							time.sleep(2)
-							print("So now it is the next player's turn to select his/her hand\n")
+							print("So now your turn is over\n")
 							time.sleep(2)
 							break
 						else:
@@ -575,7 +587,7 @@ def blackjack(player_list, credit_dict, score_dict, rounds_count):
 								time.sleep(2)
 								print('COMPUTER, so you are confident in your hand\n')
 								time.sleep(2)
-								print("COMPUTER, now it is next player's turn\n")
+								print("COMPUTER, your turn is over\n")
 								score_dict[curr_player] = mi_card_total
 								break
 					print('score dict = {0}'.format(score_dict), file=fd)
@@ -598,30 +610,16 @@ def blackjack(player_list, credit_dict, score_dict, rounds_count):
 				print('No Winner in this round')
 				continue
 			diff_winner_list = list(winner_dict.values())
-			for i in range(1, len(diff_winner_list)):
-				for j in range(len(diff_winner_list) - 1):
-					if diff_winner_list[j] > diff_winner_list[j + 1]:
-						diff_winner_list[j], diff_winner_list[j + 1] = diff_winner_list[j + 1], diff_winner_list[j]
-			print(diff_winner_list, file=fd)
-			for pl, val in winner_dict.items():
-				if winner_dict[pl] != diff_winner_list[-1]:
-					loser_list.append(pl)
-				else:
-					winner_list.append(pl)
-			print('Winner List is ----> {0} and \n Loser List ----> {1}'.format(winner_list,loser_list), file=fd)
 			print('----->UPDATING CREDITS FOR THIS ROUND<-----\n')
-
-			for pl, bet in player_bet.items:
-				total_pot += player_bet[pl]
-			credit = int((total_pot * len(loser_list)) / len(winner_list))
-			updateCredits(credit, loser_list, winner_list)
+			time.sleep(3)
+			updateCredits(loser_list, winner_list)
+			input('Press ENTER to continue')
 			os.system('clear')
-			time.sleep(5)
 	print(credit_dict, file=fd)
 	announceWinner()
 
 def announceWinner():
-	fin_loser_list = []
+	'''fin_loser_list = []
 	fin_winner_list = []
 	in_credit_list = list(credit_dict.values())
 	for i in range(1, len(in_credit_list)):
@@ -639,27 +637,41 @@ def announceWinner():
 
 	print('------>LOSERS ARE<------\n')
 	for elm in fin_loser_list:
-		print(elm,'------>',credit_dict[elm],'\n')
+		print(elm,'------>',credit_dict[elm],'\n')'''
+	in_credit_list = list(credit_dict.values())
+	winner = ''
+	print('END OF GAME')
+	time.sleep(2)
+	for i in range(1, len(in_credit_list)):
+		for j in range(len(in_credit_list) - 1):
+			if in_credit_list[j] > in_credit_list[j + 1]:
+				winner = in_credit_list[j]
+				in_credit_list[j], in_credit_list[j + 1] = in_credit_list[j + 1], in_credit_list[j]
+	for pl in credit_dict:
+		print('{0} ----> {1} credits\n'.format(pl, credit_dict[pl]))
 
+	time.sleep(5)
+	print('Congrats to {0} for having the highest amount of credits\n')
+	print('THANK YOU FOR PLAYING')
+	input('PRESS ENTER TO END GAME\n')
 
-def updateCredits(crdt, lsr_list, wnr_list):
-	in_credit = crdt
+def updateCredits(lsr_list, wnr_list):
 	in_loser_list = lsr_list.copy()
 	in_winner_list = wnr_list.copy()
 
-	if len(in_winner_list) > 1:
-		in_credit = in_credit / len(in_winner_list)
+	for pl in in_winner_list:
+		if credit_dict[pl] == 21:
+			if len(in_winner_list) == 1:
+				credit_dict[pl] += 2.5 * player_bet[pl]
+				print('{0}, you have {1} credits/n'.format(pl, credit_dict[pl]))
+		else:
+			credit_dict[pl] += 2 * player_bet[pl]
+			print('{0}, you have {1} credits/n'.format(pl, credit_dict[pl]))
+	for pl in in_loser_list:
+		credit_dict[pl] -= player_bet[pl]
+		print('{0}, you have {1} credits/n'.format(pl, credit_dict[pl]))
 
-	for pl, scr in credit_dict.items():
-		if pl in in_loser_list:
-			scr1 = scr - round_bet
-			credit_dict[pl] = scr1
-			print('{0} has lost {1} credits and has total credits of {2}\n'.format(pl, round_bet, scr1))
-			time.sleep(1)
-		elif pl in in_winner_list:
-			scr1 = scr + round_bet
-			credit_dict[pl] = scr1
-			print('{0} has gained {1} credits and has total credits of {2}\n'.format(pl, round_bet, scr1))
+
 
 
 
