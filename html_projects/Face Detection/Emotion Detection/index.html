@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en"></html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initia-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"> 
+	
+    <title>Emotion Detection</title>
+    
+    <style>
+        h1 {
+            border-style: solid;
+        }
+
+        body {
+            background-color: lightblue;
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        h2 {
+            border-style: solid;
+        }
+
+        canvas {
+            position: absolute;
+        }
+    </style>
+    <script src="face-api.min.js" defer></script>
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <video class="center" id="video" width="720" height="560" autoplay muted></video>
+</body>
+</html> 
