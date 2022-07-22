@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en"></html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initia-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"> 
+	
+    <title>Face Recognition</title>
+    
+    <style>
+		body {
+			background-color: lightblue;
+			margin: 0;
+			padding: 0;
+			width: 100vw;
+			height: 100vh;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column
+		}
+
+    	canvas {
+      		position: absolute;
+     		top: 0;
+      		left: 0;
+   		}
+    </style>
+    <script src="face-api.min.js" defer></script>
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+	<input type="file" id="imageUpload">
+</body>
+</html> 
